@@ -69,6 +69,11 @@ home_implied_odds = 1 / home_win_probability
 draw_implied_odds = 1 / draw_probability
 away_implied_odds = 1 / away_win_probability
 
+# over goals
+goals_0_5 = 1 - probability_matrix.iloc[0, 0]
+goals_1_5 = 1 - sum([probability_matrix.iloc[0, 0], probability_matrix.iloc[1, 0], probability_matrix.iloc[0, 1]])
+
+
 if __name__ == '__main__':
     print(f"Fixture: {home_team} vs. {away_team}")
     print("============================================")
@@ -79,3 +84,12 @@ if __name__ == '__main__':
     print(f"IO of {home_team} Win: {home_implied_odds:.2f}")
     print(f"IO of Draw: {draw_implied_odds:.2f}")
     print(f"IO of {away_team} Win: {away_implied_odds:.2f}")
+    print("============================================\nGoals Over Market")
+    print("Goals | Probability | IO")
+    print(f"0.5 | {goals_0_5:.2f} | {(1 / goals_0_5):.2f}")
+    print(f"1.5 | {1 - probability_matrix.iloc[0, 0]:.2f} | {1 / (1 - probability_matrix.iloc[0, 0]):.2f}")
+    print(f"2.5 | {1 - probability_matrix.iloc[0, 0]:.2f} | {1 / (1 - probability_matrix.iloc[0, 0]):.2f}")
+    print(f"3.5 | {1 - probability_matrix.iloc[0, 0]:.2f} | {1 / (1 - probability_matrix.iloc[0, 0]):.2f}")
+    print(f"4.5 | {1 - probability_matrix.iloc[0, 0]:.2f} | {1 / (1 - probability_matrix.iloc[0, 0]):.2f}")
+
+probability_matrix.iloc[0, 0]
