@@ -9,8 +9,8 @@ warnings.filterwarnings('ignore')
 season = '2022'
 league = 'EPL'  # English Premier League
 
-home_team = 'Arsenal'
-away_team = 'Aston Villa'
+home_team = 'Aston Villa'
+away_team = 'Liverpool'
 
 # fetch league Home & Away XG table
 dfs = etl.get_league_tables(league, season)
@@ -19,12 +19,20 @@ dfs = etl.get_league_tables(league, season)
 home_df, away_df = etl.format_understat_data(dfs)
 
 # split 2 dataframes for home and away realised goals scored/conceded
-home_realised_g = etl.realised_goals_df(home_df)
-away_realised_g = etl.realised_goals_df(away_df)
+home_xg = etl.expected_goals_df(home_df)
+away_xg = etl.expected_goals_df(away_df)
 
+# away team
+avg_away_gpg_scored_away = metrics.away_team_gpg_scored_away(away_team, away_xg)
+avg_away_gpg_conceded_away = metrics.away_team_gpg_conceded_away(away_team, away_xg)
 
-avg_away_gpg_scored_away = metrics.expected_away_team_gpg_scored_away(away_team)
-avg_away_gpg_conceded_away = away_realised_g[away_realised_g['Team'] == away_team]['GpG_Conceded'].iloc[0]
+# home team
+avg_home_gpg_scored_home = metrics.home_team_gpg_scored_at_home(home_team, home_xg)
+avg_home_gpg_conceded_home = metrics.home_team_gpg_conceded_at_home(home_team, home_xg)
+
+# total averages
+total_avg_home_gpg_scored = home_xg['GpG_Scored'].mean()
+total_avg_away_gpg_scored = away_xg['GpG_Scored'].mean()
 
 # Team average goals scored & conceded as ratios of the total league averages
 home_attack = avg_home_gpg_scored_home / total_avg_home_gpg_scored
@@ -60,3 +68,14 @@ np.testing.assert_almost_equal(home_win_probability + away_win_probability + dra
 home_implied_odds = 1 / home_win_probability
 draw_implied_odds = 1 / draw_probability
 away_implied_odds = 1 / away_win_probability
+
+if __name__ == '__main__':
+    print(f"Fixture: {home_team} vs. {away_team}")
+    print("============================================")
+    print(f"Probability of {home_team} Win: {home_win_probability:.2f}")
+    print(f"Probability of Draw: {draw_probability:.2f}")
+    print(f"Probability of {away_team} Win: {away_win_probability:.2f}")
+    print("============================================")
+    print(f"IO of {home_team} Win: {home_implied_odds:.2f}")
+    print(f"IO of Draw: {draw_implied_odds:.2f}")
+    print(f"IO of {away_team} Win: {away_implied_odds:.2f}")
