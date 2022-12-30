@@ -9,8 +9,8 @@ warnings.filterwarnings('ignore')
 season = '2022'
 league = 'EPL'  # English Premier League
 
-home_team = 'Aston Villa'
-away_team = 'Liverpool'
+home_team = 'Liverpool'
+away_team = 'Leicester'
 
 # fetch league Home & Away XG table
 dfs = etl.get_league_tables(league, season)
@@ -91,5 +91,3 @@ if __name__ == '__main__':
     print(f"2.5 | {1 - probability_matrix.iloc[0, 0]:.2f} | {1 / (1 - probability_matrix.iloc[0, 0]):.2f}")
     print(f"3.5 | {1 - probability_matrix.iloc[0, 0]:.2f} | {1 / (1 - probability_matrix.iloc[0, 0]):.2f}")
     print(f"4.5 | {1 - probability_matrix.iloc[0, 0]:.2f} | {1 / (1 - probability_matrix.iloc[0, 0]):.2f}")
-
-probability_matrix.iloc[0, 0]
