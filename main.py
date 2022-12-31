@@ -9,8 +9,8 @@ warnings.filterwarnings('ignore')
 season = '2022'
 league = 'EPL'  # English Premier League
 
-home_team = 'Liverpool'
-away_team = 'Leicester'
+home_team = 'Nottingham Forest'
+away_team = 'Chelsea'
 
 # fetch league Home & Away XG table
 dfs = etl.get_league_tables(league, season)
@@ -87,7 +87,3 @@ if __name__ == '__main__':
     print("============================================\nGoals Over Market")
     print("Goals | Probability | IO")
     print(f"0.5 | {goals_0_5:.2f} | {(1 / goals_0_5):.2f}")
-    print(f"1.5 | {1 - probability_matrix.iloc[0, 0]:.2f} | {1 / (1 - probability_matrix.iloc[0, 0]):.2f}")
-    print(f"2.5 | {1 - probability_matrix.iloc[0, 0]:.2f} | {1 / (1 - probability_matrix.iloc[0, 0]):.2f}")
-    print(f"3.5 | {1 - probability_matrix.iloc[0, 0]:.2f} | {1 / (1 - probability_matrix.iloc[0, 0]):.2f}")
-    print(f"4.5 | {1 - probability_matrix.iloc[0, 0]:.2f} | {1 / (1 - probability_matrix.iloc[0, 0]):.2f}")
