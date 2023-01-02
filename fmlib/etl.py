@@ -6,12 +6,29 @@ import aiohttp
 
 
 def get_league_tables(league: str, season: str) -> list:
+    """
+    Aggregates home and away tables for a given league in a given season
+    :param league: league in question
+    :param season: season in question
+    :return: amalgamated list
+    """
     async def main():
         async with aiohttp.ClientSession() as session:
             understat = Understat(session)
             home_table = await understat.get_league_table(league, season, h_a='h')
             away_table = await understat.get_league_table(league, season, h_a='a')
         return [DataFrame(home_table), DataFrame(away_table)]
+
+    loop = asyncio.get_event_loop()
+    return loop.run_until_complete(main())
+
+
+def get_upcoming_fixtures(league: str, season: str) -> list:
+    async def main():
+        async with aiohttp.ClientSession() as session:
+            understat = Understat(session)
+            fixtures = await understat.get_league_fixtures(league, season)
+        return fixtures
 
     loop = asyncio.get_event_loop()
     return loop.run_until_complete(main())

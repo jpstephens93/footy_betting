@@ -2,6 +2,7 @@ from fmlib import etl, metrics
 
 import pandas as pd
 import numpy as np
+import datetime as dt
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -9,8 +10,18 @@ warnings.filterwarnings('ignore')
 season = '2022'
 league = 'EPL'  # English Premier League
 
-home_team = 'Nottingham Forest'
-away_team = 'Chelsea'
+dte = dt.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+
+all_fixtures = pd.DataFrame(etl.get_upcoming_fixtures(league, season))[['h', 'a', 'datetime']]
+upcoming_fixtures = all_fixtures[all_fixtures['datetime'] >= dte].head(10)
+
+for h_a in ['h', 'a']:
+    upcoming_fixtures[h_a] = [x['title'] for x in upcoming_fixtures[h_a]]
+
+i = 0
+
+home_team = upcoming_fixtures['h'].iloc[i]
+away_team = upcoming_fixtures['a'].iloc[i]
 
 # fetch league Home & Away XG table
 dfs = etl.get_league_tables(league, season)
@@ -73,17 +84,15 @@ away_implied_odds = 1 / away_win_probability
 goals_0_5 = 1 - probability_matrix.iloc[0, 0]
 goals_1_5 = 1 - sum([probability_matrix.iloc[0, 0], probability_matrix.iloc[1, 0], probability_matrix.iloc[0, 1]])
 
-
-if __name__ == '__main__':
-    print(f"Fixture: {home_team} vs. {away_team}")
-    print("============================================")
-    print(f"Probability of {home_team} Win: {home_win_probability:.2f}")
-    print(f"Probability of Draw: {draw_probability:.2f}")
-    print(f"Probability of {away_team} Win: {away_win_probability:.2f}")
-    print("============================================")
-    print(f"IO of {home_team} Win: {home_implied_odds:.2f}")
-    print(f"IO of Draw: {draw_implied_odds:.2f}")
-    print(f"IO of {away_team} Win: {away_implied_odds:.2f}")
-    print("============================================\nGoals Over Market")
-    print("Goals | Probability | IO")
-    print(f"0.5 | {goals_0_5:.2f} | {(1 / goals_0_5):.2f}")
+print(f"Fixture: {home_team} vs. {away_team}")
+print("============================================")
+print(f"Probability of {home_team} Win: {home_win_probability:.2f}")
+print(f"Probability of Draw: {draw_probability:.2f}")
+print(f"Probability of {away_team} Win: {away_win_probability:.2f}")
+print("============================================")
+print(f"IO of {home_team} Win: {home_implied_odds:.2f}")
+print(f"IO of Draw: {draw_implied_odds:.2f}")
+print(f"IO of {away_team} Win: {away_implied_odds:.2f}")
+print("============================================\nGoals Over Market")
+print("Goals | Probability | IO")
+print(f"0.5 | {goals_0_5:.2f} | {(1 / goals_0_5):.2f}")
