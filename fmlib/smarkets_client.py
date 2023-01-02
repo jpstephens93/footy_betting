@@ -4,7 +4,7 @@ import typing as t
 
 import requests
 
-from smk_trading_bot.config import configuration
+from config import configuration
 
 log = logging.getLogger(__name__)
 
