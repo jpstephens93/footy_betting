@@ -130,3 +130,7 @@ dmypy.json
 
 # Note files
 *.txt
+
+# smarkets
+tickerplant.db
+configuration.toml

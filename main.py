@@ -1,12 +1,17 @@
 from fmlib import etl, metrics
+import fmlib.smarkets_client as client
 
 import pandas as pd
 import numpy as np
 import datetime as dt
 
+from logging.config import fileConfig
+from pprint import pprint
+
 import warnings
 warnings.filterwarnings('ignore')
 
+# UNDERSTAT
 season = '2022'
 league = 'EPL'  # English Premier League
 
@@ -96,3 +101,39 @@ print(f"IO of {away_team} Win: {away_implied_odds:.2f}")
 print("============================================\nGoals Over Market")
 print("Goals | Probability | IO")
 print(f"0.5 | {goals_0_5:.2f} | {(1 / goals_0_5):.2f}")
+
+# SMARKETS
+fileConfig('logging.config', disable_existing_loggers=False)
+
+# instantiate client: single instance per session
+# copy the template from configuration_template.toml and fill it with
+# your credentials!
+client = client.SmarketsClient()
+
+# do initial authentication
+client.init_session()
+
+# date for events
+start_date = dt.datetime.now() + dt.timedelta(days=1)
+
+events = client.get_available_events(['upcoming'], ['football_match'], start_date, 20)
+
+# place some bets
+"""
+client.place_order(
+    market_id,    # market id
+    contract_id,  # contract id
+    50,           # percentage price * 10**4, here: 0.5% / 200 decimal / 19900 american
+    500000,       # quantity: total stake * 10**4, here: 50 GBP. Your buy order locks 0.25 GBP, as
+                  #      0.25 GBP * 200 = 50 GBP
+    'buy',        # order side: buy or sell
+)
+"""
+
+# lets get the orders now!
+pprint(client.get_orders(states=['created', 'filled', 'partial']))
+
+pprint(client.get_accounts())
+
+# eeh, changed my mind
+# client.cancel_order('202547466272702478')
