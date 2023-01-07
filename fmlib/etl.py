@@ -24,6 +24,12 @@ def get_league_tables(league: str, season: str) -> list:
 
 
 def get_upcoming_fixtures(league: str, season: str) -> list:
+    """
+    Gets list of upcoming fixtures for a given league in the given season
+    :param league: league in question
+    :param season: season in question
+    :return: amalgamated list
+    """
     async def main():
         async with aiohttp.ClientSession() as session:
             understat = Understat(session)
