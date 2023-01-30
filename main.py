@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore')
 
 # UNDERSTAT
 season = '2023'
-league = 'Ligue 1'
+league = 'EPL'
 
 dte = dt.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
