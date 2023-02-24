@@ -94,5 +94,7 @@ for i in range(len(upcoming_fixtures)):
     print(f"IO of Draw: {draw_implied_odds:.2f}")
     print(f"IO of {away_team} Win: {away_implied_odds:.2f}")
     print(f"Most likely scoreline: {home_team} {home_goals_pred}-{away_goals_pred} {away_team}")
+    print(f"Draw no bet: {1/(home_win_probability/sum([home_win_probability, away_win_probability])):.2f} "
+          f"vs {1/(away_win_probability/sum([home_win_probability, away_win_probability])):.2f}")
     print("====================================================")
 
